@@ -40,12 +40,15 @@ export const Input = (props: InputType) => {
 
   // جلوگیری از فوکوس خودکار بعد از mount
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.blur();
-    }
+    // اگر مرورگر یا پلاسمیک خواست خودش autofocus بزنه، بلافاصله blur کن
+    requestAnimationFrame(() => {
+      if (inputRef.current && document.activeElement === inputRef.current) {
+        inputRef.current.blur();
+      }
+    });
   }, []);
 
-  // حذف autoFocus از attributes
+  // حذف خاصیت autoFocus از attributes
   const { autoFocus, ...restAttributes } = attributes ?? {};
 
   return (
